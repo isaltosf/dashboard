@@ -2,6 +2,7 @@
 //import reactLogo from './assets/react.svg'
 //import viteLogo from '/vite.svg'
 import { Grid } from '@mui/material';
+import { useState } from 'react'
 import IndicatorUI from './components/indicatorUI';
 import HeaderUI from './components/HeaderUI'
 import AlertUI from './components/AlertUI';
@@ -11,8 +12,12 @@ import TableUI from './components/TableUI';
 import ChartUI from './components/ChartUI';
 import './App.css'
 function App() {
-   const { data, loading, error } = useFetchData();
-   
+   const [selectedOption, setSelectedOption] = useState<string | null>(null);
+   const { data, loading, error } = useFetchData(selectedOption);
+
+   const handleOptionSelect = (option: string) => {
+      setSelectedOption(option);
+   };
    return (
       <Grid container spacing={5} justifyContent={"center"} alignItems={"center"}>
 
@@ -27,7 +32,7 @@ function App() {
          </Grid>
 
          {/* Selector */}
-         <Grid size={{ xs: 12, md: 3 }}><SelectorUI />
+         <Grid size={{ xs: 12, md: 3 }}><SelectorUI onOptionSelect={handleOptionSelect} />
          </Grid>
 
          {/* Indicadores */}
@@ -87,7 +92,7 @@ function App() {
             <ChartUI data={data} loading={loading} error={error} />
          </Grid>
 
-         {/* Tabla */} 
+         {/* Tabla */}
          <Grid sx={{ display: { xs: "none ", md: "block" } }} >
             <TableUI data={data} loading={loading} error={error} />
          </Grid>
