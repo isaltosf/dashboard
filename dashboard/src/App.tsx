@@ -118,12 +118,12 @@ function App() {
             </Grid>
 
             {/* Gráfico */}
-            <Grid sx={{ display: { xs: "none ", md: "block" } }} >
+            <Grid size={{ xs: 12, md: 12 }} >
                <ChartUI data={data} loading={loading} error={error} />
             </Grid>
 
             {/* Tabla */}
-            <Grid sx={{ display: { xs: "none ", md: "block" } }} >
+            <Grid size={{ xs: 12, md: 12 }} >
                <TableUI data={data} loading={loading} error={error} />
             </Grid>
 
