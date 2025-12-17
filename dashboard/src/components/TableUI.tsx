@@ -3,15 +3,6 @@ import Typography from '@mui/material/Typography';
 import { DataGrid, type GridColDef } from '@mui/x-data-grid';
 import { type OpenMeteoResponse } from '../types/Dashboardtypes';
 
-function combineArrays(arrLabels: Array<string>, arrValues1: Array<number>, arrValues2: Array<number>) {
-   return arrLabels.map((label, index) => ({
-      id: index,
-      label: label,
-      value1: arrValues1[index],
-      value2: arrValues2[index]
-   }));
-}
-
 const columns: GridColDef[] = [
    { field: 'id', headerName: 'ID', width: 90 },
    {
@@ -40,10 +31,6 @@ const columns: GridColDef[] = [
    },
 ];
 
-const arrValues1 = [4000, 3000, 2000, 2780, 1890, 2390, 3490];
-const arrValues2 = [2400, 1398, 9800, 3908, 4800, 3800, 4300];
-const arrLabels = ['A','B','C','D','E','F','G'];
-
 interface TableUIProps {
    data?: OpenMeteoResponse;
    loading?: boolean;
@@ -51,8 +38,8 @@ interface TableUIProps {
 }
 
 function prepareApiData(data: OpenMeteoResponse) {
-   const maxHours = 48;
-   
+   const maxHours = 24;
+
    return data.hourly.time.slice(0, maxHours).map((time, index) => {
       const date = new Date(time);
       const horaFormateada = date.toLocaleString('es-ES', {
@@ -90,10 +77,10 @@ export default function TableUI({ data, loading, error }: TableUIProps) {
       );
    }
 
-   // Si hay datos de la API, usarlos; si no, usar datos originales
-   const rows = (data && data.hourly) 
+   // Si hay datos de la API, usarlos; si no, mostrar tabla vacía
+   const rows = (data && data.hourly)
       ? prepareApiData(data)
-      : combineArrays(arrLabels, arrValues1, arrValues2);
+      : [];
 
    return (
       <Box sx={{ height: 350, width: '100%' }}>
